@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="static/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <title>YouTube Downloader</title>
+</head>
+<body>
+    <h1>YouTube Video/Audio Downloader</h1>
+    <div id="spinner-popup">
+  <span class="loader"><span class="loader-text">Loading...</span></span>
+  <p>Preparing your download...</p>
+</div>
+
+
+
+
+<form method="POST" id="downloadForm">
+    <label for="url">YouTube URL:</label>
+    <input type="text" id="url" name="url" placeholder="Enter YouTube URL..." required>
+
+    <label for="format">Format:</label>
+    <select name="format" id="format">
+        <option value="video">Video</option>
+        <option value="audio">Audio</option>
+    </select>
+
+
+    <div style="margin-top: 20px;">
+        <button type="submit">Download</button>
+    </div>
+</form>
+
+
+<script>
+document.getElementById("downloadForm").addEventListener("submit", function (e) {
+    e.preventDefault(); // Stop form from submitting normally
+
+    document.getElementById("spinner-popup").style.display = "block";
+
+    // Send form data using JS
+    const form = e.target;
+    const formData = new FormData(form);
+
+    fetch("/", {
+        method: "POST",
+        body: formData,
+    })
+    .then(res => {
+        // When done, redirect to /download
+        window.location.href = "/download";
+        document.getElementById("spinner-popup").style.display = "none"; // Hide spinner early (optional)
+    })
+    .catch(err => {
+        alert("Something went wrong!");
+        document.getElementById("spinner-popup").style.display = "none";
+    });
+});
+</script>
+
+
+
+</body>
+</html>
